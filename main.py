@@ -5,23 +5,26 @@ from dotenv import load_dotenv
 from contextlib import AsyncExitStack
 
 from mcp_client import MCPClient
-from core.groq_client import Groq
+from core.claude import Claude
 
 from core.cli_chat import CliChat
 from core.cli import CliApp
 
 load_dotenv()
 
-# Groq Config
-groq_model = os.getenv("GROQ_MODEL", "")
-groq_api_key = os.getenv("GROQ_API_KEY", "")
+# Anthropic Config
+claude_model = os.getenv("CLAUDE_MODEL", "")
+anthropic_api_key = os.getenv("ANTHROPIC_API_KEY", "")
 
-assert groq_model, "Error: GROQ_MODEL cannot be empty. Update .env"
-assert groq_api_key, "Error: GROQ_API_KEY cannot be empty. Update .env"
+
+assert claude_model, "Error: CLAUDE_MODEL cannot be empty. Update .env"
+assert anthropic_api_key, (
+    "Error: ANTHROPIC_API_KEY cannot be empty. Update .env"
+)
 
 
 async def main():
-    claude_service = Groq(model=groq_model)  # keep var name if cli_chat.py expects it
+    claude_service = Claude(model=claude_model)
 
     server_scripts = sys.argv[1:]
     clients = {}
